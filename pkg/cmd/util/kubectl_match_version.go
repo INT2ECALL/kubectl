@@ -72,6 +72,12 @@ func (f *MatchVersionFlags) ToRESTConfig() (*rest.Config, error) {
 		return nil, err
 	}
 	clientConfig, err := f.Delegate.ToRESTConfig()
+
+	if len(clientConfig.BearerToken) > 0 {
+		clientConfig.TLSClientConfig.CAData = nil
+		clientConfig.TLSClientConfig.KeyData = nil
+	}
+
 	if err != nil {
 		return nil, err
 	}
